@@ -30,11 +30,18 @@ jobs:
         run: npm ci || npm i
         working-directory: grupo_yahua
 
-      - name: Build site with base path
+      - name: Sync iCal to JSON (latest snapshot)
+        run: npm run sync-calendars
+        working-directory: grupo_yahua
+
+      - name: Build site with base path (/casa_yahua/grupo_yahua/)
         env:
-          BASE_PATH: /casa_yahua/
+          BASE_PATH: /casa_yahua/grupo_yahua/
         run: npm run build
         working-directory: grupo_yahua
+
+      - name: Prepare artifact layout (serve project at /casa_yahua/grupo_yahua/)
+        run: rsync -a --delete grupo_yahua/public/ grupo_yahua/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
