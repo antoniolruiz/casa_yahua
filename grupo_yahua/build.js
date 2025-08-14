@@ -24,7 +24,7 @@ async function ensureDir(dirPath) {
 }
 
 function isImageFile(fileName) {
-  return /(\.jpe?g|\.png|\.webp)$/i.test(fileName);
+  return /(\.jpe?g|\.png|\.webp|\.avif)$/i.test(fileName);
 }
 
 async function listSuiteDirectories() {
