@@ -85,7 +85,9 @@
     const slug = container.dataset.slug;
     if (!slug) return;
     try {
-      const res = await fetch(`/availability/${slug}.json`, { cache: 'no-store' });
+      const base = document.querySelector('meta[name="base-path"]');
+      const basePath = base ? base.getAttribute('content') || '/' : '/';
+      const res = await fetch(`${basePath}availability/${slug}.json`, { cache: 'no-store' });
       if (!res.ok) throw new Error('not ok');
       const data = await res.json();
       const booked = Array.isArray(data.bookedDates) ? data.bookedDates : [];

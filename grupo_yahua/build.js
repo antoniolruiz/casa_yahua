@@ -11,6 +11,16 @@ const AVAIL_DEST_DIR = path.join(PUBLIC_DIR, 'availability');
 const CONFIG_DIR = path.join(ROOT, 'data');
 const CONFIG_PATH = path.join(CONFIG_DIR, 'config.json');
 
+function normalizeBasePath(input) {
+  if (!input || input === '/') return '/';
+  let bp = String(input).trim();
+  if (!bp.startsWith('/')) bp = '/' + bp;
+  if (!bp.endsWith('/')) bp = bp + '/';
+  return bp;
+}
+
+const BASE_PATH = normalizeBasePath(process.env.BASE_PATH || '/');
+
 function slugify(name) {
   return name
     .toLowerCase()
@@ -92,19 +102,21 @@ function makeBaseHtml({ title, body, extraHead = '' }) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="base-path" content="${BASE_PATH}" />
     <title>${htmlEscape(title)}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="${BASE_PATH}assets/styles.css" />
     ${extraHead}
   </head>
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="/">Casa Yahua</a>
+        <a class="brand" href="${BASE_PATH}">Casa Yahua</a>
         <nav class="nav">
-          <a href="/">Home</a>
+          <a href="${BASE_PATH}">Home</a>
         </nav>
       </div>
     </header>
@@ -116,16 +128,16 @@ function makeBaseHtml({ title, body, extraHead = '' }) {
         <span>&copy; ${new Date().getFullYear()} Casa Yahua</span>
       </div>
     </footer>
-    <script src="/assets/site.js" defer></script>
+    <script src="${BASE_PATH}assets/site.js" defer></script>
   </body>
 </html>`;
 }
 
 function makeIndexHtml(suites) {
   const cards = suites.map(suite => {
-    const cover = `/images/${suite.slug}/${encodeURIComponent(suite.images[0].fileName)}`;
+    const cover = `${BASE_PATH}images/${suite.slug}/${encodeURIComponent(suite.images[0].fileName)}`;
     return `
-      <a class="card" href="/listings/${suite.slug}/">
+      <a class="card" href="${BASE_PATH}listings/${suite.slug}/">
         <div class="card-image" style="background-image:url('${cover}')" aria-hidden="true"></div>
         <div class="card-body">
           <h2 class="card-title">${htmlEscape(suite.name)}</h2>
@@ -149,12 +161,12 @@ function makeIndexHtml(suites) {
 
 function makeListingHtml(suite) {
   const gallery = suite.images.map(img => {
-    const src = `/images/${suite.slug}/${encodeURIComponent(img.fileName)}`;
+    const src = `${BASE_PATH}images/${suite.slug}/${encodeURIComponent(img.fileName)}`;
     return `<a href="${src}" target="_blank" rel="noopener"><img loading="lazy" src="${src}" alt="${htmlEscape(suite.name)} photo" /></a>`;
   }).join('\n');
 
   const body = `
-    <a class="back" href="/">← Back to all suites</a>
+    <a class="back" href="${BASE_PATH}">← Back to all suites</a>
     <h1>${htmlEscape(suite.name)}</h1>
     <section>
       <h2>Gallery</h2>
