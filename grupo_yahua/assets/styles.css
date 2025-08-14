@@ -127,6 +127,7 @@ body {
 .day .num { font-weight: 600; font-size: 0.95rem; }
 .day.booked { background: rgba(239,68,68,0.18); color: #fecaca; }
 .day.today { outline: 2px solid rgba(96,165,250,0.5); outline-offset: -2px; }
+.day.past { color: #6b7280; text-decoration: line-through; }
 
 .placeholder { padding: 12px; border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); background: rgba(255,255,255,0.02); }
 

@@ -13,7 +13,9 @@
   }
 
   function renderCalendar(container, bookedDates, monthsToShow = 6) {
-    const todayYmd = fmtYmd(new Date());
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const todayYmd = fmtYmd(today);
 
     const bookedSet = new Set(bookedDates);
     const monthsWrapper = document.createElement('div');
@@ -57,11 +59,13 @@
 
       for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
+        date.setHours(0,0,0,0);
         const ymd = fmtYmd(date);
         const el = document.createElement('div');
         el.className = 'day';
         if (bookedSet.has(ymd)) el.classList.add('booked');
         if (ymd === todayYmd) el.classList.add('today');
+        if (date < today) el.classList.add('past');
         const num = document.createElement('div');
         num.className = 'num';
         num.textContent = String(day);
