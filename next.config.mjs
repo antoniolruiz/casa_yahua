@@ -15,7 +15,9 @@ const nextConfig = {
       { protocol: 'https', hostname: 'a0.muscache.com' },
       { protocol: 'https', hostname: 'a1.muscache.com' },
       { protocol: 'https', hostname: 'a2.muscache.com' },
-      { protocol: 'https', hostname: 'res.cloudinary.com' }
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'picsum.photos' }
     ]
   }
 }

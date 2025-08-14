@@ -41,6 +41,50 @@ async function main() {
     });
   }
 
+  // Demo Hotel with two sample listings and images (idempotent by name)
+  const demoExists = await prisma.hotel.findFirst({ where: { name: "Demo Hotel" } });
+  if (!demoExists) {
+    await prisma.hotel.create({
+      data: {
+        name: "Demo Hotel",
+        description: "A demo property with two sample listings for testing.",
+        location: "Anywhere, Earth",
+        listings: {
+          create: [
+            {
+              airbnbId: "demo-listing-1",
+              airbnbUrl: "https://example.com/demo-listing-1",
+              title: "Ocean View Suite",
+              nightlyBasePrice: 18000,
+              baseCurrency: "USD",
+              images: {
+                create: [
+                  { url: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1600&auto=format&fit=crop", position: 0 },
+                  { url: "https://images.unsplash.com/photo-1505691723518-36a5ac3b2d95?q=80&w=1600&auto=format&fit=crop", position: 1 },
+                  { url: "https://images.unsplash.com/photo-1505691938893-1f2e1b5aa0eb?q=80&w=1600&auto=format&fit=crop", position: 2 },
+                ],
+              },
+            },
+            {
+              airbnbId: "demo-listing-2",
+              airbnbUrl: "https://example.com/demo-listing-2",
+              title: "Garden Studio",
+              nightlyBasePrice: 9500,
+              baseCurrency: "USD",
+              images: {
+                create: [
+                  { url: "https://images.unsplash.com/photo-1505691723518-36a5ac3b2d95?q=80&w=1600&auto=format&fit=crop", position: 0 },
+                  { url: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=1600&auto=format&fit=crop", position: 1 },
+                  { url: "https://images.unsplash.com/photo-1505691728513-36a5ac3b2d95?q=80&w=1600&auto=format&fit=crop", position: 2 },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+
   console.log("Seed complete");
 }
 
