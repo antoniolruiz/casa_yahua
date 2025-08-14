@@ -202,6 +202,20 @@ async function writeListingPages(suites) {
   }
 }
 
+async function write404Redirect() {
+  const html = `<!doctype html><html><head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0; url=${BASE_PATH}" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Not Found</title>
+  </head>
+  <body>
+    <p>Not found. <a href="${BASE_PATH}">Return to site</a>.</p>
+  </body></html>`;
+  await writeFile(path.join(PUBLIC_DIR, '404.html'), html);
+}
+
 async function ensureConfig(suites) {
   await ensureDir(CONFIG_DIR);
   let current = {};
@@ -242,6 +256,7 @@ async function main() {
   await copySuiteImages(suites);
   await writeIndexPage(suites);
   await writeListingPages(suites);
+  await write404Redirect();
   await ensureConfig(suites);
   await ensureEmptyAvailability(suites);
   console.log(`Built site with ${suites.length} suite(s). Open public/index.html or run: npm start`);
